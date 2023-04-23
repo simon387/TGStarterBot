@@ -12,7 +12,7 @@ from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import CallbackContext, Application, ContextTypes, ApplicationBuilder, AIORateLimiter, CommandHandler
 
-import constants as c
+import Constants
 from BotApp import BotApp
 
 log.basicConfig(
@@ -25,28 +25,28 @@ log.basicConfig(
 		log.StreamHandler()
 	],
 	format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-	level=c.LOG_LEVEL
+	level=Constants.LOG_LEVEL
 )
 
 
 async def send_version(update: Update, context: CallbackContext):
 	log_bot_event(update, 'send_version')
-	await context.bot.send_message(chat_id=update.effective_chat.id, text=get_version() + c.VERSION_MESSAGE)
+	await context.bot.send_message(chat_id=update.effective_chat.id, text=get_version() + Constants.VERSION_MESSAGE)
 
 
 async def send_shutdown(update: Update, context: CallbackContext):
 	log_bot_event(update, 'send_shutdown')
-	if update.effective_user.id == int(c.TELEGRAM_DEVELOPER_CHAT_ID):
+	if update.effective_user.id == int(Constants.TELEGRAM_DEVELOPER_CHAT_ID):
 		os.kill(os.getpid(), signal.SIGINT)
 	else:
-		await context.bot.send_message(chat_id=update.effective_chat.id, text=c.ERROR_NO_GRANT_SHUTDOWN)
+		await context.bot.send_message(chat_id=update.effective_chat.id, text=Constants.ERROR_NO_GRANT_SHUTDOWN)
 
 
 async def post_init(app: Application):
 	version = get_version()
 	log.info(f"Starting TGDownloaderBot, {version}")
 	if c.SEND_START_AND_STOP_MESSAGE == 'true':
-		await app.bot.send_message(chat_id=c.TELEGRAM_DEVELOPER_CHAT_ID, text=c.STARTUP_MESSAGE + version, parse_mode=ParseMode.HTML)
+		await app.bot.send_message(chat_id=Constants.TELEGRAM_DEVELOPER_CHAT_ID, text=Constants.STARTUP_MESSAGE + version, parse_mode=ParseMode.HTML)
 
 
 async def post_shutdown(app: Application):
@@ -97,13 +97,13 @@ def get_version():
 
 if __name__ == '__main__':
 	application = ApplicationBuilder() \
-		.token(c.TOKEN) \
+		.token(Constants.TOKEN) \
 		.application_class(BotApp) \
 		.post_init(post_init) \
 		.post_shutdown(post_shutdown) \
-		.rate_limiter(AIORateLimiter(max_retries=c.AIO_RATE_LIMITER_MAX_RETRIES)) \
-		.http_version(c.HTTP_VERSION) \
-		.get_updates_http_version(c.HTTP_VERSION) \
+		.rate_limiter(AIORateLimiter(max_retries=Constants.AIO_RATE_LIMITER_MAX_RETRIES)) \
+		.http_version(Constants.HTTP_VERSION) \
+		.get_updates_http_version(Constants.HTTP_VERSION) \
 		.build()
 	application.add_handler(CommandHandler('version', send_version))
 	application.add_handler(CommandHandler('shutdown', send_shutdown))
