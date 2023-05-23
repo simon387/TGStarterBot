@@ -45,7 +45,7 @@ async def send_shutdown(update: Update, context: CallbackContext):
 async def post_init(app: Application):
 	version = get_version()
 	log.info(f"Starting TGDownloaderBot, {version}")
-	if c.SEND_START_AND_STOP_MESSAGE == 'true':
+	if Constants.SEND_START_AND_STOP_MESSAGE == 'true':
 		await app.bot.send_message(chat_id=Constants.TELEGRAM_DEVELOPER_CHAT_ID, text=Constants.STARTUP_MESSAGE + version, parse_mode=ParseMode.HTML)
 
 
@@ -83,7 +83,7 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
 	if message.count('</pre>') % 2 != 0:
 		message += '</pre>'
 	# Finally, send the message
-	await context.bot.send_message(chat_id=c.TELEGRAM_DEVELOPER_CHAT_ID, text=message, parse_mode=ParseMode.HTML)
+	await context.bot.send_message(chat_id=Constants.TELEGRAM_DEVELOPER_CHAT_ID, text=message, parse_mode=ParseMode.HTML)
 	# Restart the bot
 	time_os.sleep(5.0)
 	os.execl(sys.executable, sys.executable, *sys.argv)
