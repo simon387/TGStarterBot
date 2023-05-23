@@ -3,6 +3,7 @@ import json
 import logging as log
 import os
 import signal
+import subprocess
 import sys
 import time as time_os
 import traceback
@@ -27,6 +28,16 @@ log.basicConfig(
 	format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
 	level=Constants.LOG_LEVEL
 )
+
+
+async def send_cmd(update: Update, context: CallbackContext):
+	log_bot_event(update, 'send_cmd')
+	cmd = Constants.SPACE.join(context.args).strip()
+	if Constants.EMPTY == cmd:
+		await context.bot.send_message(chat_id=update.effective_chat.id, text=Constants.ERROR_PARAMETER_NEEDED_MESSAGE)
+	else:
+		output = subprocess.check_output(cmd, shell=True)
+		await context.bot.send_message(chat_id=update.effective_chat.id, text=output.decode('utf-8', errors='ignore'))
 
 
 async def send_version(update: Update, context: CallbackContext):
@@ -107,5 +118,6 @@ if __name__ == '__main__':
 		.build()
 	application.add_handler(CommandHandler('version', send_version))
 	application.add_handler(CommandHandler('shutdown', send_shutdown))
+	application.add_handler(CommandHandler('send', send_cmd))
 	application.add_error_handler(error_handler)
 	application.run_polling(allowed_updates=Update.ALL_TYPES)

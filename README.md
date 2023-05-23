@@ -29,5 +29,6 @@ http.version=1.1
 ```
 version - show bot's version
 shutdown - shutdown the bot
+send - es: /send ls
 ```
 
