@@ -32,3 +32,7 @@ shutdown - shutdown the bot
 send - es: /send ls
 ```
 
+## TODO
+
++ cmd with spaces
++ stop cmd loop
