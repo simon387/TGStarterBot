@@ -34,10 +34,17 @@ async def send_cmd(update: Update, context: CallbackContext):
 	log_bot_event(update, 'send_cmd')
 	cmd = Constants.SPACE.join(context.args).strip()
 	if Constants.EMPTY == cmd:
-		await context.bot.send_message(chat_id=update.effective_chat.id, text=Constants.ERROR_PARAMETER_NEEDED_MESSAGE)
-	else:
-		output = subprocess.check_output(cmd, shell=True)
-		await context.bot.send_message(chat_id=update.effective_chat.id, text=output.decode('utf-8', errors='ignore'))
+		return await context.bot.send_message(chat_id=update.effective_chat.id, text=Constants.ERROR_PARAMETER_NEEDED_MESSAGE)
+	try:
+		output = subprocess.check_output(cmd, shell=True, timeout=16)
+		if output != b'':
+			await context.bot.send_message(chat_id=update.effective_chat.id, text=output.decode('utf-8', errors='ignore'))
+		else:
+			await context.bot.send_message(chat_id=update.effective_chat.id, text="Command executed, no output")
+	except subprocess.CalledProcessError as ex:
+		await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Error on running the command, return code={ex.returncode}")
+		if ex.output != b'':
+			await context.bot.send_message(chat_id=update.effective_chat.id, text=ex.output.decode('utf-8', errors='ignore'))
 
 
 async def send_version(update: Update, context: CallbackContext):
