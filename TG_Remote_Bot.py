@@ -45,6 +45,8 @@ async def send_cmd(update: Update, context: CallbackContext):
 		await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Error on running the command, return code={ex.returncode}")
 		if ex.output != b'':
 			await context.bot.send_message(chat_id=update.effective_chat.id, text=ex.output.decode('utf-8', errors='ignore'))
+	except subprocess.TimeoutExpired:
+		await context.bot.send_message(chat_id=update.effective_chat.id, text="Command not executed, timeout reached! (16sec)")
 
 
 async def send_version(update: Update, context: CallbackContext):
