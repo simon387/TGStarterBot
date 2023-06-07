@@ -37,3 +37,4 @@ send - es: /send ls
 + ~~cmd with spaces~~
 + ~~stop cmd loop~~
 + ~~telegram.error.BadRequest: Message is too long~~
++ custom timeout in properties, better string message management

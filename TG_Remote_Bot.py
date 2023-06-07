@@ -52,7 +52,7 @@ async def send_cmd(update: Update, context: CallbackContext):
 # send message wrapper, use it to managae long messages
 async def send_msg_w(update: Update, context: CallbackContext, text: str):
 	try:
-		await context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+		await context.bot.send_message(chat_id=update.effective_chat.id, text=to_code_block(text))
 	except telegram.error.BadRequest as e:
 		if "Message is too long" in str(e):
 			# Split the message into smaller chunks
@@ -60,10 +60,14 @@ async def send_msg_w(update: Update, context: CallbackContext, text: str):
 			chunks = [text[i:i + max_length] for i in range(0, len(text), max_length)]
 			# Send each chunk as a separate message
 			for chunk in chunks:
-				await context.bot.send_message(chat_id=update.effective_chat.id, text="```" + chunk + "```", parse_mode=ParseMode.MARKDOWN_V2)
+				await context.bot.send_message(chat_id=update.effective_chat.id, text=to_code_block(chunk), parse_mode=ParseMode.MARKDOWN_V2)
 		else:
 			# Handle other BadRequest errors
 			log.error(f"Failed to send message: {str(e)}")
+
+
+def to_code_block(text: str):
+	return "```" + text + "```"
 
 
 async def send_version(update: Update, context: CallbackContext):
