@@ -54,6 +54,7 @@ async def send_msg_w(update: Update, context: CallbackContext, text: str):
 	try:
 		await context.bot.send_message(chat_id=update.effective_chat.id, text=to_code_block(text), parse_mode=ParseMode.MARKDOWN_V2)
 	except telegram.error.BadRequest as e:
+		log.info(str(e))
 		if "Message is too long" in str(e):
 			# Split the message into smaller chunks
 			max_length = 4096  # Maximum allowed length for a message
@@ -67,7 +68,7 @@ async def send_msg_w(update: Update, context: CallbackContext, text: str):
 
 
 def to_code_block(text: str):
-	return "```" + text + " ```"
+	return "```\n" + text + "\n```"
 
 
 async def send_version(update: Update, context: CallbackContext):
