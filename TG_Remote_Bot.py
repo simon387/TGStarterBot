@@ -60,7 +60,7 @@ async def send_msg_w(update: Update, context: CallbackContext, text: str):
 			chunks = [text[i:i + max_length] for i in range(0, len(text), max_length)]
 			# Send each chunk as a separate message
 			for chunk in chunks:
-				await context.bot.send_message(chat_id=update.effective_chat.id, text=chunk)
+				await context.bot.send_message(chat_id=update.effective_chat.id, text="```" + chunk + "```", parse_mode=ParseMode.MARKDOWN_V2)
 		else:
 			# Handle other BadRequest errors
 			log.error(f"Failed to send message: {str(e)}")
