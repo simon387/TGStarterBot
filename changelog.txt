@@ -1,3 +1,6 @@
+Version 1.0.2
+- fixed telegram.error.BadRequest: Message is too long
+
 Version 1.0.1
 - added command error management
 - added command timeout

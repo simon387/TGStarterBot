@@ -34,5 +34,6 @@ send - es: /send ls
 
 ## TODO
 
-+ cmd with spaces
-+ stop cmd loop
++ ~~cmd with spaces~~
++ ~~stop cmd loop~~
++ ~~telegram.error.BadRequest: Message is too long~~

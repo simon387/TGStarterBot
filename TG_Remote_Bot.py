@@ -9,6 +9,7 @@ import time as time_os
 import traceback
 from logging.handlers import RotatingFileHandler
 
+import telegram
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import CallbackContext, Application, ContextTypes, ApplicationBuilder, AIORateLimiter, CommandHandler
@@ -38,15 +39,31 @@ async def send_cmd(update: Update, context: CallbackContext):
 	try:
 		output = subprocess.check_output(cmd, shell=True, timeout=16)
 		if output != b'':
-			await context.bot.send_message(chat_id=update.effective_chat.id, text=output.decode('utf-8', errors='ignore'))
-		else:
-			await context.bot.send_message(chat_id=update.effective_chat.id, text="Command executed, no output")
+			return await send_msg_w(update, context, output.decode('utf-8', errors='ignore'))
+		return await context.bot.send_message(chat_id=update.effective_chat.id, text="Command executed, no output")
 	except subprocess.CalledProcessError as ex:
 		await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Error on running the command, return code={ex.returncode}")
 		if ex.output != b'':
-			await context.bot.send_message(chat_id=update.effective_chat.id, text=ex.output.decode('utf-8', errors='ignore'))
+			await send_msg_w(update, context, ex.output.decode('utf-8', errors='ignore'))
 	except subprocess.TimeoutExpired:
 		await context.bot.send_message(chat_id=update.effective_chat.id, text="Command not executed, timeout reached! (16sec)")
+
+
+# send message wrapper, use it to managae long messages
+async def send_msg_w(update: Update, context: CallbackContext, text: str):
+	try:
+		await context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+	except telegram.error.BadRequest as e:
+		if "Message is too long" in str(e):
+			# Split the message into smaller chunks
+			max_length = 4096  # Maximum allowed length for a message
+			chunks = [text[i:i + max_length] for i in range(0, len(text), max_length)]
+			# Send each chunk as a separate message
+			for chunk in chunks:
+				await context.bot.send_message(chat_id=update.effective_chat.id, text=chunk)
+		else:
+			# Handle other BadRequest errors
+			log.error(f"Failed to send message: {str(e)}")
 
 
 async def send_version(update: Update, context: CallbackContext):
