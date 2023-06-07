@@ -62,9 +62,11 @@ async def send_msg_w(update: Update, context: CallbackContext, text: str):
 			for chunk in chunks:
 				await context.bot.send_message(chat_id=update.effective_chat.id, text=to_code_block(chunk), parse_mode=ParseMode.MARKDOWN_V2)
 		else:
-			log.info(str(e))
-			# Handle other BadRequest errors
-			log.error(f"Failed to send message: {str(e)}")
+			if "Can't parse entities:" in str(e):
+				await context.bot.send_message(chat_id=update.effective_chat.id, text=text)
+			else:
+				# Handle other BadRequest errors
+				log.error(f"Failed to send message: {str(e)}")
 
 
 def to_code_block(text: str):
