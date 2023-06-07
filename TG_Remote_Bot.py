@@ -67,7 +67,7 @@ async def send_msg_w(update: Update, context: CallbackContext, text: str):
 
 
 def to_code_block(text: str):
-	return "``` " + text + " ```"
+	return "```" + text + " ```"
 
 
 async def send_version(update: Update, context: CallbackContext):
