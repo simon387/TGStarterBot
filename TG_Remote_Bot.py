@@ -63,7 +63,10 @@ async def send_msg_w(update: Update, context: CallbackContext, text: str, markdo
 			chunks = [text[i:i + max_length] for i in range(0, len(text), max_length)]
 			# Send each chunk as a separate message
 			for chunk in chunks:
-				await context.bot.send_message(chat_id=update.effective_chat.id, text=to_code_block(chunk), parse_mode=ParseMode.MARKDOWN_V2)
+				if markdown:
+					await context.bot.send_message(chat_id=update.effective_chat.id, text=to_code_block(chunk), parse_mode=ParseMode.MARKDOWN_V2)
+				else:
+					await context.bot.send_message(chat_id=update.effective_chat.id, text=chunk)
 		else:
 			if "Can't parse entities:" in str(e):
 				await send_msg_w(update, context, text, False)
