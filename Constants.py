@@ -27,6 +27,7 @@ STOP_MESSAGE = "TG_Remote_Bot stopped!"
 VERSION_MESSAGE = " - more info on https://github.com/simon387/TG_Remote_Bot/blob/master/changelog.txt"
 VALID_LINK_MESSAGE = "This is a valid page link! What do you want to do?"
 ERROR_NO_GRANT_SHUTDOWN = "You can't shutdown the bot!"
+ERROR_NO_GRANT_SEND = "You can't send this command!"
 ERROR_PARAMETER_NEEDED_MESSAGE = "This command needs a parameter!"
 # urls
 

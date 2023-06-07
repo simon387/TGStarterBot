@@ -33,6 +33,8 @@ log.basicConfig(
 
 async def send_cmd(update: Update, context: CallbackContext):
 	log_bot_event(update, 'send_cmd')
+	if update.effective_user.id != int(Constants.TELEGRAM_DEVELOPER_CHAT_ID):
+		return await context.bot.send_message(chat_id=update.effective_chat.id, text=Constants.ERROR_NO_GRANT_SEND)
 	cmd = Constants.SPACE.join(context.args).strip()
 	if Constants.EMPTY == cmd:
 		return await context.bot.send_message(chat_id=update.effective_chat.id, text=Constants.ERROR_PARAMETER_NEEDED_MESSAGE)
