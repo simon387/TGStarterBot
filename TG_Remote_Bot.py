@@ -39,16 +39,16 @@ async def send_cmd(update: Update, context: CallbackContext):
 	if Constants.EMPTY == cmd:
 		return await context.bot.send_message(chat_id=update.effective_chat.id, text=Constants.ERROR_PARAMETER_NEEDED_MESSAGE)
 	try:
-		output = subprocess.check_output(cmd, shell=True, timeout=16)
+		output = subprocess.check_output(cmd, shell=True, timeout=Constants.CMD_TIMEOUT)
 		if output != b'':
-			return await send_msg_w(update, context, output.decode('utf-8', errors='ignore'))
-		return await context.bot.send_message(chat_id=update.effective_chat.id, text="Command executed, no output")
+			return await send_msg_w(update, context, output.decode(Constants.UTF_8, errors='ignore'))
+		return await context.bot.send_message(chat_id=update.effective_chat.id, text=Constants.MESSAGE_CMD_EXECUTED)
 	except subprocess.CalledProcessError as ex:
-		await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Error on running the command, return code={ex.returncode}")
+		await context.bot.send_message(chat_id=update.effective_chat.id, text=Constants.ERROR_RUN_CMD.format(ex=ex))
 		if ex.output != b'':
-			await send_msg_w(update, context, ex.output.decode('utf-8', errors='ignore'))
+			await send_msg_w(update, context, ex.output.decode(Constants.UTF_8, errors='ignore'))
 	except subprocess.TimeoutExpired:
-		await context.bot.send_message(chat_id=update.effective_chat.id, text="Command not executed, timeout reached! (16sec)")
+		await context.bot.send_message(chat_id=update.effective_chat.id, text=Constants.ERROR_TIMEOUT_CMD)
 
 
 # send message wrapper, use it to managae long messages
@@ -74,11 +74,11 @@ async def send_msg_w(update: Update, context: CallbackContext, text: str, markdo
 				await send_msg_w(update, context, text, False)
 			else:
 				# Handle other BadRequest errors
-				log.error(f"Failed to send message: {str(e)}")
+				log.error(Constants.ERROR_ON_SEND_MSG.format(e=str(e)))
 
 
 def to_code_block(text: str):
-	return "```\n" + text + "\n```"
+	return f"```\n{text}\n```"
 
 
 async def send_version(update: Update, context: CallbackContext):

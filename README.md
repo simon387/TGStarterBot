@@ -16,6 +16,7 @@ telegram.developer.chat.id=WWW
 # log.level = info | debug | error
 log.level=info
 send.start.and.stop.message=false
+cmd.timeout=16
 # 1.1 | 2
 http.version=1.1
 ```
@@ -37,6 +38,6 @@ send - es: /send ls
 + ~~cmd with spaces~~
 + ~~stop cmd loop~~
 + ~~telegram.error.BadRequest: Message is too long~~
-+ custom timeout in properties
-+ better string message management
++ ~~custom timeout in properties~~
++ ~~better string message management~~
 + sudo su
