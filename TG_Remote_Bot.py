@@ -39,7 +39,9 @@ async def send_cmd(update: Update, context: CallbackContext):
 	if Constants.EMPTY == cmd:
 		return await context.bot.send_message(chat_id=update.effective_chat.id, text=Constants.ERROR_PARAMETER_NEEDED_MESSAGE)
 	try:
+		is_sudo = False
 		if cmd.startswith("sudo "):
+			is_sudo = True
 			cmd.lstrip("sudo ")
 			sudo_command = ['sudo', '-S'] + cmd.split()
 			process = subprocess.Popen(sudo_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
@@ -51,6 +53,8 @@ async def send_cmd(update: Update, context: CallbackContext):
 		else:
 			output = subprocess.check_output(cmd, shell=True, timeout=Constants.CMD_TIMEOUT)
 		if output != b'':
+			if is_sudo:
+				return await send_msg_w(update, context, output)
 			return await send_msg_w(update, context, output.decode(Constants.UTF_8, errors='ignore'))
 		return await context.bot.send_message(chat_id=update.effective_chat.id, text=Constants.MESSAGE_CMD_EXECUTED)
 	except subprocess.CalledProcessError as ex:
