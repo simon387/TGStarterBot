@@ -42,4 +42,4 @@ send - es: /send ls
 + ~~telegram.error.BadRequest: Message is too long~~
 + ~~custom timeout in properties~~
 + ~~better string message management~~
-+ sudo su
++ ~~sudo su~~ ma basico
