@@ -45,7 +45,7 @@ async def send_cmd(update: Update, context: CallbackContext):
 			cmd.lstrip("sudo ")
 			sudo_command = ['sudo', '-S'] + cmd.split()
 			process = subprocess.Popen(sudo_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
-			password = '12Caratteri!\n'
+			password = '\n'
 			process.stdin.write(password)
 			process.stdin.flush()
 			#
