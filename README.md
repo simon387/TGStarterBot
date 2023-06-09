@@ -13,6 +13,7 @@ Telegram bot used to manage programs on remote GNU/Linux servers
 telegram.token=XXX
 telegram.group.id=YYY
 telegram.developer.chat.id=WWW
+remote.sudo.password=
 [application]
 # log.level = info | debug | error
 log.level=info
