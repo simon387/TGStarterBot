@@ -7,6 +7,7 @@ config.read("config.properties")
 SECRETS = "secrets"
 TOKEN = config.get(SECRETS, "telegram.token")
 TELEGRAM_DEVELOPER_CHAT_ID = config.get(SECRETS, "telegram.developer.chat.id")
+TELEGRAM_GROUP_ID = config.get(SECRETS, "telegram.group.id")
 # application's settings
 APPLICATION = "application"
 SEND_START_AND_STOP_MESSAGE = config.get(APPLICATION, "send.start.and.stop.message")

@@ -98,6 +98,7 @@ async def post_init(app: Application):
 	version = get_version()
 	log.info(f"Starting TGDownloaderBot, {version}")
 	if Constants.SEND_START_AND_STOP_MESSAGE == 'true':
+		await app.bot.send_message(chat_id=Constants.TELEGRAM_GROUP_ID, text=Constants.STARTUP_MESSAGE + version, parse_mode=ParseMode.HTML)
 		await app.bot.send_message(chat_id=Constants.TELEGRAM_DEVELOPER_CHAT_ID, text=Constants.STARTUP_MESSAGE + version, parse_mode=ParseMode.HTML)
 
 
