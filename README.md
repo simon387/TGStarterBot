@@ -43,3 +43,4 @@ send - es: /send ls
 + ~~custom timeout in properties~~
 + ~~better string message management~~
 + ~~sudo su~~ ma basico
++ regressione timeout
