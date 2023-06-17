@@ -51,7 +51,7 @@ async def send_cmd(update: Update, context: CallbackContext):
 			#
 			output, error = process.communicate()
 		else:
-			output = subprocess.check_output(cmd, timeout=Constants.CMD_TIMEOUT)
+			output = subprocess.check_output(cmd, shell=True, timeout=Constants.CMD_TIMEOUT)
 		if output != b'' and output != '':
 			if is_sudo:
 				return await send_msg_w(update, context, output)
