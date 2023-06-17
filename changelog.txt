@@ -1,3 +1,6 @@
+Version 1.0.7
+- fixed timeout (on windows)
+
 Version 1.0.6
 - added basic sudo usage
 
