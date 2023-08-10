@@ -120,8 +120,11 @@ async def post_shutdown(app: Application):
 	log.info(f"Shutting down, bot id={str(app.bot.id)}")
 
 
+# v1.0, highest
 def log_bot_event(update: Update, method_name: str):
-	msg = update.message.text
+	msg = '>>No message<<'
+	if update.message is not None:
+		msg = update.message.text
 	user = update.effective_user.first_name
 	uid = update.effective_user.id
 	log.info(f"[method={method_name}] Got this message from {user} [id={str(uid)}]: {msg}")
