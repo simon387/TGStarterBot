@@ -67,14 +67,16 @@ async def send_cmd(update: Update, context: CallbackContext):
 
 # send message wrapper, use it to managae long messages
 async def send_msg_w(update: Update, context: CallbackContext, text: str, markdown=True):
-	log.info(f'send_msg_w text: {text}')
 	try:
 		if markdown:
 			await context.bot.send_message(chat_id=update.effective_chat.id, text=to_code_block(text), parse_mode=ParseMode.MARKDOWN_V2)
 		else:
+			log.info( "len(text)")
+			log.info( len(text))
+			log.info( "len(text)")
 			await context.bot.send_message(chat_id=update.effective_chat.id, text=text)
 	except telegram.error.BadRequest as e:
-		if "Message is too long" in str(e) or "Message must be non-empty" in str (e):
+		if "Message is too long" in str(e):
 			# Split the message into smaller chunks
 			max_length = 4096  # Maximum allowed length for a message
 			chunks = [text[i:i + max_length] for i in range(0, len(text), max_length)]
