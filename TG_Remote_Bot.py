@@ -69,14 +69,8 @@ async def send_cmd(update: Update, context: CallbackContext):
 async def send_msg_w(update: Update, context: CallbackContext, text: str, markdown=True):
 	try:
 		if markdown:
-			log.info( "len(text)1")
-			log.info( len(text))
-			log.info( "len(text)1")
 			await context.bot.send_message(chat_id=update.effective_chat.id, text=to_code_block(text), parse_mode=ParseMode.MARKDOWN_V2)
 		else:
-			log.info( "len(text)2")
-			log.info( len(text))
-			log.info( "len(text)2")
 			await context.bot.send_message(chat_id=update.effective_chat.id, text=text)
 	except telegram.error.BadRequest as e:
 		if "Message is too long" in str(e):
@@ -88,7 +82,7 @@ async def send_msg_w(update: Update, context: CallbackContext, text: str, markdo
 				if markdown:
 					await context.bot.send_message(chat_id=update.effective_chat.id, text=to_code_block(chunk), parse_mode=ParseMode.MARKDOWN_V2)
 				else:
-					await context.bot.send_message(chat_id=update.effective_chat.id, text=chunk + ' ')
+					await context.bot.send_message(chat_id=update.effective_chat.id, text=chunk)
 		else:
 			if "Can't parse entities:" in str(e):
 				await send_msg_w(update, context, text, False)
