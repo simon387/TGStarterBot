@@ -88,7 +88,7 @@ async def send_msg_w(update: Update, context: CallbackContext, text: str, markdo
 				if markdown:
 					await context.bot.send_message(chat_id=update.effective_chat.id, text=to_code_block(chunk), parse_mode=ParseMode.MARKDOWN_V2)
 				else:
-					await context.bot.send_message(chat_id=update.effective_chat.id, text=chunk)
+					await context.bot.send_message(chat_id=update.effective_chat.id, text=chunk + ' ')
 		else:
 			if "Can't parse entities:" in str(e):
 				await send_msg_w(update, context, text, False)
