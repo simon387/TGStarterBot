@@ -1,3 +1,7 @@
+Version 1.0.9
+- Added print of python's version
+- Added .vscode files
+
 Version 1.0.8
 - update log method
 
