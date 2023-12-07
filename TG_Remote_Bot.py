@@ -8,6 +8,7 @@ import sys
 import time as time_os
 import traceback
 from logging.handlers import RotatingFileHandler
+import platform
 
 import telegram
 from telegram import Update
@@ -170,6 +171,7 @@ def get_version():
 
 
 if __name__ == '__main__':
+	log.info(f'python version: {platform.python_version()}')
 	application = ApplicationBuilder() \
 		.token(Constants.TOKEN) \
 		.application_class(BotApp) \
@@ -184,3 +186,4 @@ if __name__ == '__main__':
 	application.add_handler(CommandHandler('send', send_cmd))
 	application.add_error_handler(error_handler)
 	application.run_polling(allowed_updates=Update.ALL_TYPES)
+	
