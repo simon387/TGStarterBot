@@ -1,3 +1,6 @@
+Version 1.0.12
+- new NetworkError management
+
 Version 1.0.11
 - fix log bug
 
