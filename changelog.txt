@@ -1,6 +1,3 @@
-Version 1.0.12
-- test new network error interceptor
-
 Version 1.0.11
 - fix log bug
 

@@ -2,13 +2,13 @@ import html
 import json
 import logging as log
 import os
+import platform
 import signal
 import subprocess
 import sys
 import time as time_os
 import traceback
 from logging.handlers import RotatingFileHandler
-import platform
 
 import telegram
 from telegram import Update
@@ -175,21 +175,17 @@ def get_version():
 
 if __name__ == '__main__':
 	log.info(f'python version: {platform.python_version()}')
-	try:
-		application = ApplicationBuilder() \
-			.token(Constants.TOKEN) \
-			.application_class(BotApp) \
-			.post_init(post_init) \
-			.post_shutdown(post_shutdown) \
-			.rate_limiter(AIORateLimiter(max_retries=Constants.AIO_RATE_LIMITER_MAX_RETRIES)) \
-			.http_version(Constants.HTTP_VERSION) \
-			.get_updates_http_version(Constants.HTTP_VERSION) \
-			.build()
-		application.add_handler(CommandHandler('version', send_version))
-		application.add_handler(CommandHandler('shutdown', send_shutdown))
-		application.add_handler(CommandHandler('send', send_cmd))
-		application.add_error_handler(error_handler)
-		application.run_polling(allowed_updates=Update.ALL_TYPES)
-	except telegram.error.NetworkError as ne:
-		log.error(f"Telegram NetworkError: {ne}")
-
+	application = ApplicationBuilder() \
+		.token(Constants.TOKEN) \
+		.application_class(BotApp) \
+		.post_init(post_init) \
+		.post_shutdown(post_shutdown) \
+		.rate_limiter(AIORateLimiter(max_retries=Constants.AIO_RATE_LIMITER_MAX_RETRIES)) \
+		.http_version(Constants.HTTP_VERSION) \
+		.get_updates_http_version(Constants.HTTP_VERSION) \
+		.build()
+	application.add_handler(CommandHandler('version', send_version))
+	application.add_handler(CommandHandler('shutdown', send_shutdown))
+	application.add_handler(CommandHandler('send', send_cmd))
+	application.add_error_handler(error_handler)
+	application.run_polling(allowed_updates=Update.ALL_TYPES)
