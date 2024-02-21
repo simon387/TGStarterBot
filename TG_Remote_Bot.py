@@ -139,7 +139,7 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
 	# Log the error before we do anything else, so we can see it even if something breaks.
 	log.debug(msg="Exception while handling an update:", exc_info=context.error)
 	# No Network, no send message!
-	if not isinstance(context.error, telegram.error.NetworkError):
+	if not isinstance(context.error, telegram.error.NetworkError) and not isinstance(context.error, telegram.error.TimedOut):
 		# Build the message with some markup and additional information about what happened.
 		update_str = update.to_dict() if isinstance(update, Update) else str(update)
 		# list of strings rather than a single string, so we have to join them together.
