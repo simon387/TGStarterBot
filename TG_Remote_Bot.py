@@ -120,8 +120,9 @@ async def post_init(app: Application):
 		await app.bot.send_message(chat_id=Constants.TELEGRAM_DEVELOPER_CHAT_ID, text=Constants.STARTUP_MESSAGE + version, parse_mode=ParseMode.HTML)
 
 
+# noinspection PyUnusedLocal
 async def post_shutdown(app: Application):
-	log.info(f"Shutting down, bot id={str(app.bot.id)}")
+	log.info(f"Shutting down the bot")
 
 
 # v1.0, highest
@@ -151,8 +152,9 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
 		await send_error_message(context, f"<pre>context.user_data = {html.escape(str(context.user_data))}</pre>")
 		await send_error_message(context, f"<pre>{html.escape(tb_string)}</pre>")
 	# Restart the bot
-	time_os.sleep(5.0)
-	os.execl(sys.executable, sys.executable, *sys.argv)
+	if Constants.RESTART_FLAG == Constants.TRUE:
+		time_os.sleep(5.0)
+		os.execl(sys.executable, sys.executable, *sys.argv)
 
 
 async def send_error_message(context: ContextTypes.DEFAULT_TYPE, message):

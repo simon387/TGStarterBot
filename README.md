@@ -15,6 +15,7 @@ telegram.group.id=YYY
 telegram.developer.chat.id=WWW
 remote.sudo.password=
 [application]
+restart.flag=false
 # log.level = info | debug | error
 log.level=info
 send.start.and.stop.message=false

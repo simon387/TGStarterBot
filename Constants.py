@@ -11,6 +11,7 @@ TELEGRAM_GROUP_ID = config.get(SECRETS, "telegram.group.id")
 REMOTE_SUDO_PASSWORD = config.get(SECRETS, "remote.sudo.password")
 # application's settings
 APPLICATION = "application"
+RESTART_FLAG = config.get(APPLICATION, "restart.flag")
 SEND_START_AND_STOP_MESSAGE = config.get(APPLICATION, "send.start.and.stop.message")
 CMD_TIMEOUT = int(config.get(APPLICATION, "cmd.timeout"))
 HTTP_VERSION = config.get(APPLICATION, "http.version")
@@ -42,3 +43,4 @@ ERROR_ON_SEND_MSG = f"Failed to send message: {{e}}"
 SPACE = " "
 EMPTY = ""
 UTF_8 = "utf-8"
+TRUE = "true"
